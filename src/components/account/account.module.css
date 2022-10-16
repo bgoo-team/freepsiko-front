@@ -128,7 +128,9 @@ margin-top: 50px;
   -webkit-box-orient: vertical;
 }
 
-
+.modal_body{
+  margin-top: 30px;
+}
 
 @media only screen and (min-width: 1050px)  {
   .progress{

@@ -25,6 +25,7 @@ export function Account() {
     const { isOpen: isWorksOpen, onOpen: onWorksOpen, onClose: onWorksClose } = useDisclosure()
     const { isOpen: isOfferOpen, onOpen: onOfferOpen, onClose: onOfferClose } = useDisclosure()
     const { isOpen: isPersonalUpdateOpen, onOpen: onPersonalUpdateOpen, onClose: onPersonalUpdateClose } = useDisclosure()
+    const { isOpen: isOpenModal, onOpen: openModal, onClose: closeModal } = useDisclosure()
     document.body.style.backgroundColor = "#e2e2e2";
   return (
     <>
@@ -247,10 +248,8 @@ export function Account() {
                         <Container >
                           <Row >
                             <Col sm={3} >Web Site</Col>
-                            <Col sm={6} className={styles.text}>Lorem ipsum dolor sit amet,consetetur
-                            Lorem ipsum dolor sit amet,consetetur
-                            Lorem ipsum dolor sit amet,consetetur</Col>
-                            <Col sm={3} style={{color:"#ec3b83"}}>More</Col>
+                            <Col sm={6} className={styles.text}>Lorem ipsum dolor sit amet,consetetur</Col>
+                            <button sm={3} style={{color:"#ec3b83"}} onClick={openModal}>More</button>
                           </Row>
                         </Container>
                     </Card.Body>
@@ -261,7 +260,7 @@ export function Account() {
                           <Row >
                             <Col sm={3} >Mobile App</Col>
                             <Col sm={6} className={styles.text} >Lorem ipsum dolor sit amet,consetetur</Col>
-                            <Col sm={3} style={{color:"#ec3b83"}}>More</Col>
+                            <button sm={3} style={{color:"#ec3b83"}} onClick={openModal}>More</button>
                           </Row>
                         </Container>
                     </Card.Body>
@@ -272,7 +271,7 @@ export function Account() {
                           <Row >
                             <Col sm={3} >Graphic</Col>
                             <Col sm={6} className={styles.text}>Lorem ipsum dolor sit amet,consetetur</Col>
-                            <Col sm={3} style={{color:"#ec3b83"}}>More</Col>
+                            <button sm={3} style={{color:"#ec3b83"}} onClick={openModal}>More</button>
                           </Row>
                         </Container>
                     </Card.Body>
@@ -311,6 +310,24 @@ export function Account() {
               <Col style={{color:"#e23072"}}>google.com</Col>
               </Col>
             </Row>
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal onClose={closeModal} isOpen={isOpenModal} isCentered >
+        <ModalOverlay       bg='blackAlpha.300'
+      backdropFilter='blur(10px) ' />
+        <ModalContent  bg='blackAlpha.200' style={{ borderRadius: "15px"}}
+      backdropFilter='blur(50px)'>
+          <ModalCloseButton style={{backgroundColor: "white", borderRadius: "20px"}} />
+          <ModalBody className={styles.modal_body}>
+            <Container >
+              <Row >
+                <Col sm={3} >Web Site</Col>
+                <Col sm={6}>Lorem ipsum dolor sit amet,consetetur</Col>
+              </Row>
+            </Container>
           </ModalBody>
           <ModalFooter>
           </ModalFooter>

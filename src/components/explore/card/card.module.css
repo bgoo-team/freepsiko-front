@@ -52,6 +52,9 @@
   border: 0;
   background-color: transparent;
 }
+.modal_body{
+  margin-top: 30px;
+}
 
 @media only screen and (min-width: 768px) {
   .card_container {
