@@ -93,7 +93,7 @@
   border-bottom: 1px solid #e23072;
   transition: all 0.5s;
 }
-/* .login_input:focus { 
+/* .login_input:focus {
     outline: none !important;
     border-bottom: 1px solid #E23072;
     transition: all 1s;
@@ -146,6 +146,32 @@
   font-size: 14px;
   margin-top: 15px;
 }
+
+.login_button_text {
+  position: relative;
+  display: grid;
+  place-content: center;
+  display: flex;
+align-items: center;
+  padding: auto;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.login_button_spinner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  right: -35px;
+}
+
+.center_items_row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media only screen and (max-width: 576px) {
   .form_container_2 {
     min-width: 323px;

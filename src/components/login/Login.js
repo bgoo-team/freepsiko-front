@@ -6,19 +6,56 @@ import { useNavigate } from "react-router-dom";
 import login_bg from "../../img/login_bg.svg";
 import styles from "../login/login.module.css";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Spinner } from '@chakra-ui/react'
+
 let bgStyle = {
   backgroundImage: login_bg,
 };
 export function Login(props) {
-  let [isLogin, login] = useState(false);
-  let navigate = useNavigate(); 
-  const routeChange = () =>{
-    login(isLogin = true);
-    props.veriTasi(isLogin);
-    let path = '/profile'; 
-    navigate(path);
+  const [spinner, setSpinner] = useState(false)
+  const [user, setUser] = useState({username: "", password: ""})
+  const [warn, setWarn] = useState({state: false, msg: ""})
+  const [remember, setRemember] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogin = async() => {
+    console.log(user);
+    setSpinner(true)
+    try {
+      const response = await fetch("http://localhost:8080/v1/api/auth/login",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: "POST",
+          redirect:'follow',
+          body: JSON.stringify({'username':user.username,'password':user.password}),
+      });
+      console.log(response);
+      const responseText = await response.text()
+      console.log(responseText);
+      if (response.status === 200) {
+        remember
+          ? (document.cookie = `cookie1=${responseText}; expires=${new Date().getUTCFullYear() + 1}; path=/`)
+          : (window.sessionStorage.setItem('islogin', 'login'))
+        props.veriTasi(true);
+        navigate('/profile');
+      }
+      response.status === 401 && setWarn({state:true, msg: "Şifre hatalı!"})
+      response.status === 404 && setWarn({state:true, msg: `${responseText}`})
+      setSpinner(false)
+    } catch (err) {
+      console.log(err);
+      setSpinner(false)
+    }
   }
-  
+
+  const handleInput = (e) => {
+    warn.state && setWarn({state:false, msg: ""})
+    setUser((prev) => ({...prev, [e.target.name]: e.target.value.trim()}))
+  }
+
   return (
     <>
       <div className={styles.login_container}>
@@ -29,15 +66,21 @@ export function Login(props) {
             <input
               className={styles.login_input}
               variant="flushed"
-              placeholder="Mail"
+              placeholder="User Name"
+              type="text"
+              name="username"
+              onChange={handleInput}
             />
             <div className={styles.login_input_label}></div>
             <div className={styles.login_second_input}></div>
-            <input type="password"
+            <input
               className={styles.login_input}
               variant="flushed"
               placeholder="Password"
-            />
+              type="password"
+              name="password"
+						  onChange={handleInput}
+              />
             <div className={styles.login_input_label}></div>
 
             <Form>
@@ -51,6 +94,8 @@ export function Login(props) {
                     <Form.Check.Input
                       className={styles.login_checkbox_button}
                       type={type}
+                      checked={remember}
+                      onChange={() => setRemember(true)}
                       isValid
                     />
                     <div className={styles.login_checkbox_button_text}>
@@ -62,26 +107,37 @@ export function Login(props) {
             </Form>
 
             <div
-              className={styles.login_button}
+              className={`${styles.login_button} ${styles.center_items_row}`}
               variant="primary"
               type="submit"
-              onClick={routeChange}
+              onClick={handleLogin}
             >
-              Giriş
+              <div className={styles.login_button_text}>
+                Giriş
+                {spinner && <Spinner className={styles.login_button_spinner} size='sm' />}
+              </div>
+            </div>
+            {warn.state &&
+              <span style={{fontSize:12, color:"#ff1100"}}>
+                {warn.msg}
+              </span>
+            }
+            <div
+              className={styles.login_button_forgot}
+              variant="primary"
+              type="submit"
+            >
+              <Link to="/forgot-password">Şifremi Unuttum</Link>
             </div>
             <div
               className={styles.login_button_forgot}
               variant="primary"
               type="submit"
-            ><a href="/forgot-password">Şifremi Unuttum</a>
-              
-            </div>
-            <div
-              className={styles.login_button_forgot}
-              variant="primary"
-              type="submit"
-            >Hesabın yoksa<a href="/register"> <b>kaydol!</b></a>
-              
+            >
+            <Link to="/register" replace >
+              Hesabın yoksa
+                <b>&nbsp;kaydol!</b>
+            </Link>
             </div>
           </div>
         </div>

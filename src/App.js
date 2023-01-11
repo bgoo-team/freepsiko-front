@@ -6,6 +6,7 @@ import Navbar from "./components/navbar/navbar.js";
 import { Home } from "./components/home/home.js";
 import { Login } from "./components/login/Login";
 import { Register } from "./components/register/register";
+import { Activation } from "./components/activation/activation";
 import { Profile } from "./components/profile/profile.js";
 import { Account } from "./components/account/account.js";
 import { Security } from "./components/security/security.js";
@@ -18,25 +19,34 @@ import React, { useState,useEffect } from "react";
 import { ForgotPassword } from "./components/forgotPassword/forgotPassword.js";
 export function App() {
   const [isLogin, login] = useState();
-  //console.log(isLogin);
-    return (
+
+  useEffect(() => {
+    if(window !== undefined) {
+      const session = window.sessionStorage.getItem('islogin');
+      console.log(session);
+      (session === 'login' || document.cookie) ? login(true) : login(false);
+    }
+  }, [])
+
+  return (
       <BrowserRouter>
-          <ChakraProvider theme={theme}>
-      <Navbar isLogin = {isLogin}/>
-      <Routes>
-        <Route  exact path="/" element={<Home/>} />
-        <Route  exact path="/login" element={<Login veriTasi={(veri) => {login(veri);}}/>} />
-        <Route  exact path="/register" element={<Register/>} />
-        <Route  exact path="/forgot-password" element={<ForgotPassword/>} />
-        <Route  exact path="/profile" element={<Profile/>} />
-        <Route  exact path="/account" element={<Account/>} />
-        <Route  exact path="/security" element={<Security/>} />
-        <Route  exact path="/help" element={<Help/>} />
-        <Route  exact path="/jobs" element={<Jobs/>} />
-        <Route  exact path="/explore" element={ <Explore/>} />
-      </Routes>
-     <Footer/>
-      </ChakraProvider>
+        <ChakraProvider theme={theme}>
+          <Navbar isLogin = {isLogin}/>
+          <Routes>
+            <Route  exact path="/" element={<Home/>} />
+            <Route  exact path="/login" element={<Login veriTasi={(veri) => {login(veri)}}/>} />
+            <Route  exact path="/register" element={<Register/>} />
+            <Route  exact path="/activation" element={<Activation/>} />
+            <Route  exact path="/forgot-password" element={<ForgotPassword/>} />
+            <Route  exact path="/profile" element={<Profile/>} />
+            <Route  exact path="/account" element={<Account/>} />
+            <Route  exact path="/security" element={<Security/>} />
+            <Route  exact path="/help" element={<Help/>} />
+            <Route  exact path="/jobs" element={<Jobs/>} />
+            <Route  exact path="/explore" element={ <Explore/>} />
+          </Routes>
+          <Footer/>
+        </ChakraProvider>
       </BrowserRouter>
 
     );
