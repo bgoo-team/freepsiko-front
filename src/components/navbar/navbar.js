@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import logo from "../../img/logo.svg";
 import styles from "../navbar/navbar.module.css";
 import { useDisclosure } from '@chakra-ui/react'
+import { BsExclamationLg } from 'react-icons/bs'
 import {
   Modal,
   ModalOverlay,
@@ -17,9 +18,12 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-function NavScrollExample(props) {
+import { useSelector } from "react-redux";
 
+function NavScrollExample() {
+  const {currentUser} = useSelector((state) => state.user)
   const { isOpen: isAboutOpen, onOpen: onAboutOpen, onClose: onAboutClose } = useDisclosure()
+
   return (
     <>
     <Navbar className={styles.navbar_container} expand="lg" style={{position:"fixed",width:"100%",backdropFilter: "blur(2px)"}}>
@@ -51,11 +55,21 @@ function NavScrollExample(props) {
           <Link className={styles.navbar_link} to="/help">
             <div className={`${styles.navbar_navlink}`}>Yardım</div>
           </Link>
-          {props.isLogin
+          {currentUser
             ?
-              <Link className={styles.navbar_link} to="/account">
-                <img src="https://i0.wp.com/post.healthline.com/wp-content/uploads/2021/02/Female_Portrait_1296x728-header-1296x729.jpg?w=1155&h=2268" className={styles.profile_img}/>
-              </Link>
+              <div style={{position:"relative",  height: 50, width: 58}}>
+                {!currentUser?.active ?
+                    <Link to="/activation" >
+                      <div className={styles.activate_account_warning}>
+                        {<BsExclamationLg />}
+                      </div>
+                    </Link>
+                  : null
+                }
+                <Link className={styles.navbar_link} to="/profile">
+                  <img src="https://i0.wp.com/post.healthline.com/wp-content/uploads/2021/02/Female_Portrait_1296x728-header-1296x729.jpg?w=1155&h=2268" className={styles.profile_img}/>
+                </Link>
+              </div>
             :
               <Link className={styles.navbar_link} to="/login">
                 <button variant="" className={`${styles.navbar_button} rounded`}>

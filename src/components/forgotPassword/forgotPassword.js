@@ -5,6 +5,7 @@ import { Input } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import login_bg from "../../img/login_bg.svg";
 import styles from "../login/login.module.css";
+import { Link } from "react-router-dom";
 let bgStyle = {
   backgroundImage: login_bg,
 };
@@ -28,6 +29,16 @@ export function ForgotPassword() {
               type="submit"
             >
               Mail Gönder
+            </div>
+            <div
+              className={styles.login_button_forgot}
+              variant="primary"
+              type="submit"
+            >
+              <Link to="/login" replace >
+                Şifreni biliyorsan
+                  <b>&nbsp;giriş yap!</b>
+              </Link>
             </div>
 
           </div>

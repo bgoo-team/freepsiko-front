@@ -3,7 +3,10 @@ import login_bg from "../../img/login_bg.svg";
 import styles from "../login/login.module.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Spinner } from '@chakra-ui/react'
+import { Spinner } from '@chakra-ui/react';
+import { getUserInfo } from "../login/getUserInfo";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccessful } from "../../redux/userSlice";
 
 let bgStyle = {
   backgroundImage: login_bg,
@@ -12,10 +15,11 @@ export function Activation() {
   const [parameters, setParameters] = useState({mail: "", code: ""})
   const [warn, setWarn] = useState({state: false, msg: ""})
   const [spinner, setSpinner] = useState(false)
+  const {currentUser} = useSelector((state) => state.user)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleActivation = async() => {
-    console.log(parameters);
     setSpinner(true)
     try {
       const res = await fetch(`http://localhost:8080/v1/api/user/activate?mail=${parameters.mail}&code=${parameters.code}`,
@@ -26,12 +30,24 @@ export function Activation() {
         },
           method: "PATCH",
       })
+
       const result = await res.json();
-      if ( typeof result === 'object' && result?.active ) return navigate("/login")
-      setWarn({state:true, msg:"Aktivasyon kodu hatalı, lütfen kontrol edin!"})
-      setSpinner(false)
+
+      if ( typeof result === 'object' && result?.active === true ) {
+        // if user logged in, keep logged in and update active status
+        if (currentUser) {
+          dispatch(loginSuccessful(result))
+          navigate("/login")
+        } else {
+          return navigate("/login")
+        }
+      } else {
+        setWarn({state:true, msg:"Aktivasyon kodu hatalı, lütfen kontrol edin!"})
+        setSpinner(false)
+      }
     } catch (err) {
       console.log(err);
+      setWarn({state:true, msg:"Aktivasyon kodu hatalı, lütfen kontrol edin!"})
     }
   }
 
@@ -87,6 +103,10 @@ export function Activation() {
               variant="primary"
               type="submit"
             >
+              <Link to="/send-activation" replace >
+              Aktivasyon kodunu tekrar
+                <b>&nbsp;gönder!</b>
+              </Link>
             </div>
           </div>
         </div>

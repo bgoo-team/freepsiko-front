@@ -10,10 +10,21 @@ import account from '../../img/account.svg'
 import security from '../../img/security.svg'
 import privacy from '../../img/privacy.svg'
 import question from '../../img/question.svg'
+import { BsDoorOpen } from "react-icons/bs";
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/userSlice';
+
 export function Menu() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const dispatch = useDispatch()
+
+  const handleExit = () => {
+    window.sessionStorage.setItem('islogin', 'exit')
+    document.cookie = 'cookie1=null; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    dispatch(logout())
+  }
 
   return (
     <>
@@ -45,6 +56,14 @@ export function Menu() {
   <div className={styles.offcanvas_item}>
     <img src={security} style={{width: "27px", height: "25px", textAlign: "center", marginRight: "5px"}}/>
     <div>Güvenlik</div>
+  </div>
+  </Link>
+
+  <Link to="/">
+
+  <div className={styles.offcanvas_item} onClick={handleExit} >
+    {<BsDoorOpen style={{width: "25px", height: "25px", textAlign: "center", marginRight: "5px"}}/>}
+    <div>Çıkış</div>
   </div>
   </Link>
 
@@ -91,6 +110,14 @@ export function Menu() {
   <div className={styles.offcanvas_item}>
     <img src={security} style={{width: "27px", height: "25px", textAlign: "center", marginRight: "5px"}}/>
     <div>Güvenlik</div>
+  </div>
+  </Link>
+
+  <Link to="/">
+
+  <div className={styles.offcanvas_item} onClick={handleExit} >
+    {<BsDoorOpen style={{width: "25px", height: "25px", textAlign: "center", marginRight: "5px"}}/>}
+    <div>Çıkış</div>
   </div>
   </Link>
 

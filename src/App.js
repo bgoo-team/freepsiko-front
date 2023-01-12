@@ -7,6 +7,7 @@ import { Home } from "./components/home/home.js";
 import { Login } from "./components/login/Login";
 import { Register } from "./components/register/register";
 import { Activation } from "./components/activation/activation";
+import { SendActivationMail } from "./components/activation/sendActivationMail";
 import { Profile } from "./components/profile/profile.js";
 import { Account } from "./components/account/account.js";
 import { Security } from "./components/security/security.js";
@@ -18,25 +19,16 @@ import { Footer } from "./components/footer/footer.js";
 import React, { useState,useEffect } from "react";
 import { ForgotPassword } from "./components/forgotPassword/forgotPassword.js";
 export function App() {
-  const [isLogin, login] = useState();
-
-  useEffect(() => {
-    if(window !== undefined) {
-      const session = window.sessionStorage.getItem('islogin');
-      console.log(session);
-      (session === 'login' || document.cookie) ? login(true) : login(false);
-    }
-  }, [])
-
   return (
       <BrowserRouter>
         <ChakraProvider theme={theme}>
-          <Navbar isLogin = {isLogin}/>
+          <Navbar/>
           <Routes>
             <Route  exact path="/" element={<Home/>} />
-            <Route  exact path="/login" element={<Login veriTasi={(veri) => {login(veri)}}/>} />
+            <Route  exact path="/login" element={<Login />} />
             <Route  exact path="/register" element={<Register/>} />
             <Route  exact path="/activation" element={<Activation/>} />
+            <Route  exact path="/send-activation" element={<SendActivationMail/>} />
             <Route  exact path="/forgot-password" element={<ForgotPassword/>} />
             <Route  exact path="/profile" element={<Profile/>} />
             <Route  exact path="/account" element={<Account/>} />

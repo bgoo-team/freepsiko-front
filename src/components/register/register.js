@@ -8,6 +8,7 @@ import styles from "../login/login.module.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from '@chakra-ui/react'
+import { sendMail } from "../activation/sendMail";
 
 let bgStyle = {
   backgroundImage: login_bg,
@@ -24,22 +25,13 @@ export function Register() {
   const [spinner, setSpinner] = useState(false)
   const navigate = useNavigate()
 
-  const sendActivationMail = async() => {
+  const handleMail = async() => {
     try {
-      const mail = await fetch("http://localhost:8080/v1/api/user/send-activate-code?mail=" + user.mail,
-        {
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-            method: "POST",
-        }
-      )
-      console.log(mail);
-      console.log(await mail.text());
-      mail.status === 200 && navigate("/activation")
+      const res = await sendMail(user.mail)
+      res.status === 200 && navigate("/activation")
     } catch (err) {
      console.log(err);
+     setSpinner(false)
     }
   }
 
@@ -60,7 +52,7 @@ export function Register() {
         },
       })
       if (res.status === 201 ) {
-        sendActivationMail()
+        handleMail()
         const user = await res.json()
         console.log(user);
       }
@@ -93,6 +85,7 @@ export function Register() {
               name="username"
               type="text"
               onChange={handleInput}
+              required
             />
             <div className={styles.login_second_input}></div>
             <input
@@ -102,6 +95,7 @@ export function Register() {
               name="mail"
               type="email"
               onChange={handleInput}
+              required
             />
             <div className={styles.login_second_input}></div>
             <input
@@ -121,6 +115,7 @@ export function Register() {
               name="password"
               type="password"
 						  onChange={handleInput}
+              required
             />
             <div className={styles.login_second_input}></div>
             <div

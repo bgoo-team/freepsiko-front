@@ -29,7 +29,7 @@
 .card {
     /* width: 100px; */
     background-color: red;
-    
+
     transform: translate(50%,50%);
   }
   .cards_right {
@@ -67,7 +67,19 @@
     border-radius: 30px;
 }
 
-
+.activate_account_warning {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background-color: #e23072;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    display:grid;
+    place-content: center;
+    color:#1a202c;
+    padding: 3px;
+  }
 
 @media only screen and (min-width: 1050px)  {
     .progress{

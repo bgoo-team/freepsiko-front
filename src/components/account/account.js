@@ -20,19 +20,19 @@ import {
     ModalCloseButton,
   } from '@chakra-ui/react'
 export function Account() {
-    const { isOpen: isPersonalInfoOpen, onOpen: onPersonalInfoOpen, onClose: onPersonalInfoClose } = useDisclosure()
-    const { isOpen: isRegistersOpen, onOpen: onRegistersOpen, onClose: onRegistersClose } = useDisclosure()
-    const { isOpen: isWorksOpen, onOpen: onWorksOpen, onClose: onWorksClose } = useDisclosure()
-    const { isOpen: isOfferOpen, onOpen: onOfferOpen, onClose: onOfferClose } = useDisclosure()
-    const { isOpen: isPersonalUpdateOpen, onOpen: onPersonalUpdateOpen, onClose: onPersonalUpdateClose } = useDisclosure()
-    const { isOpen: isOpenModal, onOpen: openModal, onClose: closeModal } = useDisclosure()
-    document.body.style.backgroundColor = "#e2e2e2";
+  const { isOpen: isPersonalInfoOpen, onOpen: onPersonalInfoOpen, onClose: onPersonalInfoClose } = useDisclosure()
+  const { isOpen: isRegistersOpen, onOpen: onRegistersOpen, onClose: onRegistersClose } = useDisclosure()
+  const { isOpen: isWorksOpen, onOpen: onWorksOpen, onClose: onWorksClose } = useDisclosure()
+  const { isOpen: isOfferOpen, onOpen: onOfferOpen, onClose: onOfferClose } = useDisclosure()
+  const { isOpen: isPersonalUpdateOpen, onOpen: onPersonalUpdateOpen, onClose: onPersonalUpdateClose } = useDisclosure()
+  const { isOpen: isOpenModal, onOpen: openModal, onClose: closeModal } = useDisclosure()
+  document.body.style.backgroundColor = "#e2e2e2";
   return (
     <>
     <Container>
 <Row>
     <Col className={styles.col_menu} xs={12} md={12} lg={3}>
-        
+
         <Menu className={styles.menu} />
             </Col>
             <Col className={styles.col_card} xs={12} md={12} lg={9}>
@@ -45,7 +45,7 @@ export function Account() {
                     <div style={{fontSize: "20px",textAlign: "center"}}>Kişisel</div>
                     <div style={{fontSize: "16px",textAlign: "center"}}>Bilgiler</div>
                 </div>
-            </Card>  
+            </Card>
             </div>
             </Col>
             <Col style={{marginTop: "46px"}} sm={6} lg={3} className={styles.col}>
@@ -56,7 +56,7 @@ export function Account() {
                     <div style={{fontSize: "20px",textAlign: "center"}}>Eski Çalışmalarım</div>
                     <div style={{fontSize: "16px",textAlign: "center"}}>2 Adet</div>
                 </div>
-            </Card>  
+            </Card>
             </div>
             </Col>
             <Col style={{marginTop: "46px"}} sm={6} lg={3} className={styles.col}>
@@ -67,7 +67,7 @@ export function Account() {
                     <div style={{fontSize: "20px",textAlign: "center"}}>Çalışmalarım</div>
                     <div style={{fontSize: "16px",textAlign: "center"}}>1 Adet</div>
                 </div>
-            </Card>  
+            </Card>
             </div>
             </Col>
         </Row>
@@ -77,7 +77,7 @@ export function Account() {
                 <div className={styles.card_body}>
                     <div style={{fontSize: "20px",textAlign: "center",marginTop:"10%"}}>İş Tekliflerim <i style={{color:"#E23072"}}>(1)</i></div>
                 </div>
-            </Card>  
+            </Card>
             </div>
             </Col></Row>
         </Col>

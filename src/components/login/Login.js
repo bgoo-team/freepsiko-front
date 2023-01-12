@@ -8,19 +8,22 @@ import styles from "../login/login.module.css";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from '@chakra-ui/react'
+import { useDispatch } from "react-redux";
+import { getUserInfo } from "./getUserInfo";
+import { loginSuccessful } from "../../redux/userSlice";
 
 let bgStyle = {
   backgroundImage: login_bg,
 };
-export function Login(props) {
+export function Login() {
   const [spinner, setSpinner] = useState(false)
   const [user, setUser] = useState({username: "", password: ""})
   const [warn, setWarn] = useState({state: false, msg: ""})
   const [remember, setRemember] = useState(false);
+  const dispatch = useDispatch()
   const navigate = useNavigate();
 
   const handleLogin = async() => {
-    console.log(user);
     setSpinner(true)
     try {
       const response = await fetch("http://localhost:8080/v1/api/auth/login",
@@ -32,14 +35,13 @@ export function Login(props) {
           redirect:'follow',
           body: JSON.stringify({'username':user.username,'password':user.password}),
       });
-      console.log(response);
       const responseText = await response.text()
-      console.log(responseText);
       if (response.status === 200) {
         remember
           ? (document.cookie = `cookie1=${responseText}; expires=${new Date().getUTCFullYear() + 1}; path=/`)
           : (window.sessionStorage.setItem('islogin', 'login'))
-        props.veriTasi(true);
+        const userInfo = await getUserInfo(user.username)
+        userInfo && dispatch(loginSuccessful(userInfo))
         navigate('/profile');
       }
       response.status === 401 && setWarn({state:true, msg: "Şifre hatalı!"})
