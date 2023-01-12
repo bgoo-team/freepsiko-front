@@ -6,8 +6,10 @@ import Col from 'react-bootstrap/Col';
 import styles from "../section4/section4.module.css"
 import img1 from "../../img/section4_1.svg";
 import img2 from "../../img/section4_2.svg";
+import { motion } from "framer-motion"
 
 function Section4() {
+
   return (
     <div className={styles.section4_big_container}>
       {/* <img className={styles.img2} src={img2} /> */}
@@ -33,7 +35,19 @@ sadipscing elitr sed diam nonumy
       </Col>
       </Row>
     </Container>
+    <motion.div
+      style={{ y: 0 }}
+      animate={{ y: -50 }}
+      transition={{
+          delay: 1,
+          duration: 2,
+          ease: [0.075, 0.82, 0.565, 1.38],
+          repeat: Infinity,
+          repeatType: "reverse",
+      }}
+    >
       <img className={styles.img1} src={img1} />
+    </motion.div>
     </div>
   );
 }
