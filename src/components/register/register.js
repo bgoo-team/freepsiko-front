@@ -36,20 +36,22 @@ export function Register() {
   }
 
   const handleRegister = async() => {
-    console.log(user);
+    //console.log(user);
     setSpinner(true)
     try {
-      const res = await fetch("http://localhost:8080/v1/api/auth/register",
+      const res = await fetch("http://localhost:8081/v1/api/auth/register",
         {
+          //mode: 'no-cors',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'accept': '*/*',
         },
           method: "POST",
           body: JSON.stringify(user),
-          auth: {
-            "type": "noauth"
-        },
+        //   auth: {
+        //     "type": "noauth"
+        // },
       })
       if (res.status === 201 ) {
         handleMail()

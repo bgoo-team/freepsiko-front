@@ -22,7 +22,7 @@ export function Activation() {
   const handleActivation = async() => {
     setSpinner(true)
     try {
-      const res = await fetch(`http://localhost:8080/v1/api/user/activate?mail=${parameters.mail}&code=${parameters.code}`,
+      const res = await fetch(`http://localhost:8081/v1/api/user/activate?mail=${parameters.mail}&code=${parameters.code}`,
         {
           headers: {
             'Accept': 'application/json',

@@ -4,7 +4,7 @@ export const getUserInfo = async(input) => {
   const paramKey = isEmail ? "mail" : "username"
 
   try {
-    const response = await fetch(`http://localhost:8080/v1/api/user/get-by-${paramKey}?${paramKey}=${input}`,
+    const response = await fetch(`http://localhost:8081/v1/api/user/get-by-${paramKey}?${paramKey}=${input}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -15,6 +15,7 @@ export const getUserInfo = async(input) => {
     );
     const userObject = await response.json()
     if (response.status === 200) {
+      console.log(response)
       return userObject
     }
     } catch (err) {

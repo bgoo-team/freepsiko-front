@@ -10,6 +10,10 @@ import works from "../../img/account_works.svg";
 import { BsClockFill } from "react-icons/bs";
 import { useDisclosure } from '@chakra-ui/react'
 import { Input} from '@chakra-ui/react'
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
 import {
     Modal,
     ModalOverlay,
@@ -20,13 +24,79 @@ import {
     ModalCloseButton,
   } from '@chakra-ui/react'
 export function Account() {
+  const navigate = useNavigate();
+  const {currentUser} = useSelector((state) => state.user)
+
+  useEffect(() => {
+      currentUser === null && navigate("/")
+  }, [])
+  const [password, setPassword] = useState({
+    mail: currentUser.mail,
+    oldPassword: "",
+    newPassword: ""
+  })
+  const [userUpdate, setUserUpdate] = useState({
+    username: "",
+    phone: "",
+   // password: currentUser.password,
+    mail: currentUser.mail,
+  })
   const { isOpen: isPersonalInfoOpen, onOpen: onPersonalInfoOpen, onClose: onPersonalInfoClose } = useDisclosure()
   const { isOpen: isRegistersOpen, onOpen: onRegistersOpen, onClose: onRegistersClose } = useDisclosure()
   const { isOpen: isWorksOpen, onOpen: onWorksOpen, onClose: onWorksClose } = useDisclosure()
   const { isOpen: isOfferOpen, onOpen: onOfferOpen, onClose: onOfferClose } = useDisclosure()
   const { isOpen: isPersonalUpdateOpen, onOpen: onPersonalUpdateOpen, onClose: onPersonalUpdateClose } = useDisclosure()
+  const { isOpen: isPersonalPasswordUpdateOpen, onOpen: onPersonalPasswordUpdateOpen, onClose: onPersonalPasswordUpdateClose } = useDisclosure()
   const { isOpen: isOpenModal, onOpen: openModal, onClose: closeModal } = useDisclosure()
   document.body.style.backgroundColor = "#e2e2e2";
+  const changePassword = async() => {
+    try {
+      const res = await fetch("http://localhost:8081/v1/api/user/update-password",
+      {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: "PUT",
+        body: JSON.stringify(password)
+      })
+      if(res.status===200) {
+        console.log(res)
+        navigate('/profile');
+      }
+    }catch (err) {
+      console.log(err.message)
+    }
+  }
+  const changeUser = async() => {
+    try {
+      console.log(currentUser)
+      if(userUpdate.username!="" &&userUpdate.phone!=""){
+        const res = await fetch(`http://localhost:8081/v1/api/user?mail=${userUpdate.mail}`,
+        {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: "PUT",
+          body: JSON.stringify(userUpdate)
+        })
+        if(res.status===200) {
+          console.log(res)
+          navigate('/profile');
+        }
+      }
+
+    }catch (err) {
+      console.log(err.message)
+    }
+  }
+  const handleInput = (e) => {
+    setPassword((prev) => ({...prev, [e.target.name]: e.target.value.trim()}))
+  }
+  const handleInput2 = (e) => {
+    setUserUpdate((prev) => ({...prev, [e.target.name]: e.target.value.trim()}))
+  }
   return (
     <>
     <Container>
@@ -93,16 +163,35 @@ export function Account() {
             <div style={{ fontSize: "24px", fontWeight: 400,marginTop:"20px",marginBottom:"30px",textAlign:"center"}}>
             Kişisel Bilgiler
             </div>
-                <Input type='text'  value="Lena"/>
-                <Input type='text' value="+90(123)1231231234" />
-                <Input type='email' value="free@gmail.com" />
-                <Input type='password' value="12345678" />
-            <button className={styles.modal_button} onClick={onPersonalUpdateOpen}>Bilgilerimi Güncelle</button>
+                <Input type='text'  value={currentUser?.username[0]?.toUpperCase() + currentUser?.username?.slice(1)}/>
+                <Input type='text' value={currentUser.phone} />
+                <Input type='email' value={currentUser.mail} />
+            <button className={styles.modal_button} onClick={onPersonalPasswordUpdateOpen}>Bilgilerimi Güncelle</button>
+            <button className={styles.modal_button} onClick={onPersonalUpdateOpen}style={{float:"right"}}>Şifremi Değiştir</button>
           </ModalBody>
           <ModalFooter>
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <Modal onClose={onPersonalPasswordUpdateClose} isOpen={isPersonalPasswordUpdateOpen} isCentered>
+      <ModalOverlay       bg='blackAlpha.300'
+      backdropFilter='blur(10px) ' />
+        <ModalContent  bg='blackAlpha.200' style={{ borderRadius: "15px"}}
+      backdropFilter='blur(50px)'>
+          <ModalCloseButton style={{backgroundColor: "white", borderRadius: "20px"}} />
+          <ModalBody>
+            <div style={{ fontSize: "24px", fontWeight: 400,marginTop:"20px",marginBottom:"30px",textAlign:"center"}}>
+            Kişisel Bilgiler
+            </div>
+                <Input type='text'  placeholder="Username" name="username" onChange={handleInput2}/>
+                <Input type='text' placeholder="Phone" name="phone" onChange={handleInput2}/>
+            <button className={styles.modal_button} onClick={changeUser}>Kaydet</button>
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      
       <Modal onClose={onPersonalUpdateClose} isOpen={isPersonalUpdateOpen} isCentered>
       <ModalOverlay       bg='blackAlpha.300'
       backdropFilter='blur(10px) ' />
@@ -113,11 +202,9 @@ export function Account() {
             <div style={{ fontSize: "24px", fontWeight: 400,marginTop:"20px",marginBottom:"30px",textAlign:"center"}}>
             Kişisel Bilgiler
             </div>
-                <Input type='text' placeholder="Username"/>
-                <Input type='text' placeholder="Phone" />
-                <Input type='email' placeholder="Mail" />
-                <Input type='password' placeholder="Password" />
-            <button className={styles.modal_button}>Kaydet</button>
+                <Input type='password' placeholder="Old Password" name="oldPassword" onChange={handleInput} />
+                <Input type='password' placeholder="New Password" name="newPassword" onChange={handleInput}/>
+            <button className={styles.modal_button} onClick={changePassword}>Kaydet</button>
           </ModalBody>
           <ModalFooter>
           </ModalFooter>
