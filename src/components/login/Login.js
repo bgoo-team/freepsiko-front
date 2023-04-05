@@ -26,7 +26,7 @@ export function Login() {
   const handleLogin = async() => {
     setSpinner(true)
     try {
-      const response = await fetch("http://localhost:8081/v1/api/auth/login",
+      const response = await fetch("http://localhost:8080/v1/api/auth/login",
         {
           headers: {
             'Content-Type': 'application/json',

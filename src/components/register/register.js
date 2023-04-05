@@ -39,7 +39,7 @@ export function Register() {
     //console.log(user);
     setSpinner(true)
     try {
-      const res = await fetch("http://localhost:8081/v1/api/auth/register",
+      const res = await fetch("http://localhost:8080/v1/api/auth/register",
         {
           //mode: 'no-cors',
           headers: {

@@ -51,7 +51,7 @@ export function Account() {
   document.body.style.backgroundColor = "#e2e2e2";
   const changePassword = async() => {
     try {
-      const res = await fetch("http://localhost:8081/v1/api/user/update-password",
+      const res = await fetch("http://localhost:8080/v1/api/user/update-password",
       {
         headers: {
           'Accept': 'application/json',
@@ -72,7 +72,7 @@ export function Account() {
     try {
       console.log(currentUser)
       if(userUpdate.username!="" &&userUpdate.phone!=""){
-        const res = await fetch(`http://localhost:8081/v1/api/user?mail=${userUpdate.mail}`,
+        const res = await fetch(`http://localhost:8080/v1/api/user?mail=${userUpdate.mail}`,
         {
           headers: {
             'Accept': 'application/json',

@@ -1,6 +1,6 @@
 export const sendMail = async(mail) => {
   try {
-    const res = await fetch("http://localhost:8081/v1/api/user/send-activate-code?mail=" + mail,
+    const res = await fetch("http://localhost:8080/v1/api/user/send-activate-code?mail=" + mail,
       {
         headers: {
           'Accept': 'application/json',
